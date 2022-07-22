@@ -1,0 +1,11 @@
+{
+    "name": "Multisearch",
+    "version": "1.0.0",
+    "description": "Search multiple sites at once",
+    "manifest_version": 3,
+    "author": "Noah Lindsey",
+    "action":{
+        "default_popup": "index.html",
+        "default_title": "Multisearch"
+    }
+}
