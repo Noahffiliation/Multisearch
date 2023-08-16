@@ -1,20 +1,27 @@
-document.getElementById("mediaButton").addEventListener("click", open_media_tabs);
-document.getElementById("songButton").addEventListener("click", open_song_tabs);
+const mediaWebsites = [
+  'https://letterboxd.com/search/',
+  'https://trakt.tv/search?query=',
+  'https://myanimelist.net/search/all?q=',
+  'https://mydramalist.com/search?q='
+];
 
-function open_media_tabs() {
-    let search_value = document.getElementById("mediaSearch").value;
-    if (search_value != "") {
-        window.open('https://letterboxd.com/search/'+search_value);
-        window.open('https://trakt.tv/search?query='+search_value);
-        window.open('https://myanimelist.net/search/all?q='+search_value);
-        window.open('https://mydramalist.com/search?q='+search_value);
-    }
+const songWebsites = [
+	'https://chorus.fightthe.pw/search?query=',
+	'https://bsaber.com/?s='
+];
+
+const mediaButton = document.getElementById("mediaButton");
+const songButton = document.getElementById("songButton");
+const mediaSearch = document.getElementById("mediaSearch");
+const songSearch = document.getElementById("songSearch");
+
+function openTabs(websites, searchElement) {
+  const searchValue = searchElement.value;
+
+  if (!searchValue) return;
+
+  websites.forEach(website => window.open(website + encodeURIComponent(searchValue)));
 }
 
-function open_song_tabs() {
-    let search_value = document.getElementById("songSearch").value;
-    if (search_value != "") {
-        window.open('https://chorus.fightthe.pw/search?query='+search_value);
-        window.open('https://bsaber.com/?s='+search_value)
-    }
-}
+mediaButton.addEventListener("click", () => openTabs(mediaWebsites, mediaSearch));
+songButton.addEventListener("click", () => openTabs(songWebsites, songSearch));
