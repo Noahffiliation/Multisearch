@@ -7,7 +7,6 @@ const mediaWebsites = [
 
 const songWebsites = [
 	'https://www.enchor.us/?name=',
-	'https://chorus.fightthe.pw/search?query=',
 	'https://bsaber.com/?s='
 ];
 
