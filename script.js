@@ -7,7 +7,7 @@ const mediaWebsites = [
 
 const songWebsites = [
 	'https://www.enchor.us/?name=',
-	'https://bsaber.com/?s='
+	'https://beatsaver.com/?q='
 ];
 
 const gameWebsites = [
