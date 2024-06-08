@@ -13,6 +13,7 @@ const songWebsites = [
 const gameWebsites = [
 	'https://www.backloggd.com/search/games/',
 	'https://store.steampowered.com/search/?term=',
+  'https://store.playstation.com/en-us/search/',
 	'https://www.gog.com/en/games?query=',
 	'https://store.rockstargames.com/search?query=',
 	'https://store.epicgames.com/en-US/expanded-search-results?q='
