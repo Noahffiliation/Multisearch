@@ -31,7 +31,9 @@ function openTabs(websites, searchElement) {
 
   if (!searchValue) return;
 
-  websites.forEach(website => window.open(website + encodeURIComponent(searchValue)));
+	for (const website of websites) {
+		window.open(website + encodeURIComponent(searchValue));
+	}
 }
 
 mediaButton.addEventListener("click", () => openTabs(mediaWebsites, mediaSearch));
