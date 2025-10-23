@@ -16,7 +16,7 @@ const gameWebsites = [
   'https://store.playstation.com/en-us/search/',
 	'https://www.gog.com/en/games?query=',
 	'https://store.rockstargames.com/search?query=',
-	'https://store.epicgames.com/en-US/expanded-search-results?q='
+	'https://store.epicgames.com/en-US/browse?q='
 ];
 
 const mediaButton = document.getElementById("mediaButton");
