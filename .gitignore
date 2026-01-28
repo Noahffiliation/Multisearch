@@ -1,2 +1,4 @@
 .dccache
 .vscode
+coverage
+node_modules

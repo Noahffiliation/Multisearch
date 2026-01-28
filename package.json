@@ -1,0 +1,16 @@
+{
+    "name": "multisearch",
+    "version": "1.0.0",
+    "description": "Search multiple sites at once",
+    "main": "script.js",
+    "scripts": {
+        "test": "jest",
+        "test:coverage": "jest --coverage"
+    },
+    "author": "Noah Lindsey",
+    "license": "MIT",
+    "devDependencies": {
+        "jest": "^29.7.0",
+        "jest-environment-jsdom": "^29.7.0"
+    }
+}
