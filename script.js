@@ -14,10 +14,7 @@ const gameWebsites = [
 	'https://www.notion.so/noahffiliation/61f7093e99ed455fb4e497d2da55873f?v=10901b25e6fa41be83893d27b81a58c9',
 	'https://www.backloggd.com/search/games/',
 	'https://store.steampowered.com/search/?term=',
-	'https://store.playstation.com/en-us/search/',
-	'https://www.gog.com/en/games?query=',
-	'https://store.rockstargames.com/search?query=',
-	'https://store.epicgames.com/en-US/browse?q='
+	'https://store.playstation.com/en-us/search/'
 ];
 
 function openTabs(websites, searchElement) {
