@@ -55,7 +55,13 @@ if (typeof document !== 'undefined') {
 	}
 }
 
-if (typeof module !== 'undefined' && module.exports) {
+if (typeof globalThis !== 'undefined') {
+	globalThis.mediaWebsites = mediaWebsites;
+	globalThis.songWebsites = songWebsites;
+	globalThis.gameWebsites = gameWebsites;
+}
+
+if (typeof module !== 'undefined' && module?.exports) {
 	module.exports = {
 		mediaWebsites,
 		songWebsites,

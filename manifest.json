@@ -4,6 +4,12 @@
     "description": "Search multiple sites at once",
     "manifest_version": 3,
     "author": "Noah Lindsey",
+    "permissions": [
+        "contextMenus"
+    ],
+    "background": {
+        "service_worker": "background.js"
+    },
     "action":{
         "default_popup": "index.html",
         "default_title": "Multisearch"
