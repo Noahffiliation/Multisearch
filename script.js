@@ -1,6 +1,6 @@
 const mediaWebsites = [
 	'https://letterboxd.com/search/',
-	'https://trakt.tv/search?query=',
+	'https://app.trakt.tv/search?m=media&q=',
 	'https://myanimelist.net/search/all?q=',
 	'https://mydramalist.com/search?q='
 ];
