@@ -12,5 +12,9 @@
     "devDependencies": {
         "jest": "^30.4.2",
         "jest-environment-jsdom": "^30.4.1"
+    },
+    "overrides": {
+        "@babel/core": "^7.29.6",
+        "js-yaml": "^3.15.0"
     }
 }
