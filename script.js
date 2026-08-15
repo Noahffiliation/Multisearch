@@ -18,35 +18,57 @@ const gameWebsites = [
 ];
 
 function openTabs(websites, searchElement) {
-	const searchValue = searchElement.value;
+	const searchValue = searchElement?.value?.trim();
 
 	if (!searchValue) return;
 
+	const encoded = encodeURIComponent(searchValue);
 	for (const website of websites) {
-		window.open(website + encodeURIComponent(searchValue));
+		window.open(website + encoded);
 	}
 }
 
+function handleFormSubmit(event, websites, searchElement) {
+	if (event?.preventDefault) {
+		event.preventDefault();
+	}
+	openTabs(websites, searchElement);
+}
+
 function init() {
+	const mediaForm = document.getElementById("mediaForm");
+	const songForm = document.getElementById("songForm");
+	const gameForm = document.getElementById("gameForm");
+
 	const mediaButton = document.getElementById("mediaButton");
 	const songButton = document.getElementById("songButton");
 	const gameButton = document.getElementById("gameButton");
+
 	const mediaSearch = document.getElementById("mediaSearch");
 	const songSearch = document.getElementById("songSearch");
 	const gameSearch = document.getElementById("gameSearch");
 
-	if (mediaButton && mediaSearch) {
-		mediaButton.addEventListener("click", () => openTabs(mediaWebsites, mediaSearch));
+	if (mediaForm && mediaSearch) {
+		mediaForm.addEventListener("submit", (e) => handleFormSubmit(e, mediaWebsites, mediaSearch));
+	} else if (mediaButton && mediaSearch) {
+		mediaButton.addEventListener("click", (e) => handleFormSubmit(e, mediaWebsites, mediaSearch));
 	}
-	if (songButton && songSearch) {
-		songButton.addEventListener("click", () => openTabs(songWebsites, songSearch));
+
+	if (songForm && songSearch) {
+		songForm.addEventListener("submit", (e) => handleFormSubmit(e, songWebsites, songSearch));
+	} else if (songButton && songSearch) {
+		songButton.addEventListener("click", (e) => handleFormSubmit(e, songWebsites, songSearch));
 	}
-	if (gameButton && gameSearch) {
-		gameButton.addEventListener("click", () => openTabs(gameWebsites, gameSearch));
+
+	if (gameForm && gameSearch) {
+		gameForm.addEventListener("submit", (e) => handleFormSubmit(e, gameWebsites, gameSearch));
+	} else if (gameButton && gameSearch) {
+		gameButton.addEventListener("click", (e) => handleFormSubmit(e, gameWebsites, gameSearch));
 	}
 }
 
 // Only run init if we are in a browser environment with a document
+/* istanbul ignore else */
 if (typeof document !== 'undefined') {
 	if (document.readyState === 'loading') {
 		document.addEventListener('DOMContentLoaded', init);
@@ -55,18 +77,18 @@ if (typeof document !== 'undefined') {
 	}
 }
 
-if (typeof globalThis !== 'undefined') {
-	globalThis.mediaWebsites = mediaWebsites;
-	globalThis.songWebsites = songWebsites;
-	globalThis.gameWebsites = gameWebsites;
-}
+globalThis.mediaWebsites = mediaWebsites;
+globalThis.songWebsites = songWebsites;
+globalThis.gameWebsites = gameWebsites;
 
-if (typeof module !== 'undefined' && module?.exports) {
+/* istanbul ignore next */
+if (typeof module !== 'undefined' && module.exports) {
 	module.exports = {
 		mediaWebsites,
 		songWebsites,
 		gameWebsites,
 		openTabs,
+		handleFormSubmit,
 		init
 	};
 }

@@ -4,19 +4,65 @@ on:
   push:
     branches:
       - main
+    paths-ignore:
+      - '**.md'
+      - '.gitignore'
+      - '.editorconfig'
+      - 'LICENSE'
   pull_request:
     types: [opened, synchronize, reopened]
+    paths-ignore:
+      - '**.md'
+      - '.gitignore'
+      - '.editorconfig'
+      - 'LICENSE'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
 
 jobs:
+  test:
+    name: Test (Node ${{ matrix.node-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [22.x]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Run Jest tests
+        run: npm test
+
   sonarqube:
-    name: SonarQube
-    permissions:
-      contents: read
+    name: SonarQube Analysis
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - name: Checkout repository
+        uses: actions/checkout@v7
         with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '22.x'
+          cache: 'npm'
 
       - name: Install dependencies
         run: npm ci --ignore-scripts
@@ -25,6 +71,24 @@ jobs:
         run: npm run test:coverage
 
       - name: SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@55e44800a8f495208cce6e4e82f5dedb45fcf0ef
+        uses: SonarSource/sonarqube-scan-action@22918119ff8e1ca75a623e15c8296b6ea4fbe28f
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  package:
+    name: Package Extension
+    runs-on: ubuntu-latest
+    needs: [test, sonarqube]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Create extension archive
+        run: zip -r multisearch-extension.zip manifest.json background.js script.js index.html style.css icons
+
+      - name: Upload extension artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: multisearch-extension
+          path: multisearch-extension.zip
+          retention-days: 14

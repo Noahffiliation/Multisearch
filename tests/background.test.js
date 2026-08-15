@@ -41,7 +41,18 @@ describe('Background script context menu logic', () => {
 		delete globalThis.gameWebsites;
 	});
 
-	test('getWebsites returns correct array based on menuItemId', () => {
+	test('executes importScripts when available in worker environment', () => {
+		jest.isolateModules(() => {
+			global.importScripts = jest.fn();
+			require('../background');
+			expect(global.importScripts).toHaveBeenCalledWith('script.js');
+			delete global.importScripts;
+		});
+	});
+
+	test('getWebsites returns correct array based on menuItemId and caches websitesModule', () => {
+		expect(getWebsites(CONTEXT_MENUS.MEDIA)).toEqual(mediaWebsites);
+		// Second call tests reusing websitesModule
 		expect(getWebsites(CONTEXT_MENUS.MEDIA)).toEqual(mediaWebsites);
 		expect(getWebsites(CONTEXT_MENUS.SONG)).toEqual(songWebsites);
 		expect(getWebsites(CONTEXT_MENUS.GAME)).toEqual(gameWebsites);
@@ -56,6 +67,24 @@ describe('Background script context menu logic', () => {
 		expect(getWebsites(CONTEXT_MENUS.MEDIA)).toEqual(['https://globalmedia.com/']);
 		expect(getWebsites(CONTEXT_MENUS.SONG)).toEqual(['https://globalsong.com/']);
 		expect(getWebsites(CONTEXT_MENUS.GAME)).toEqual(['https://globalgame.com/']);
+	});
+
+	test('getWebsites handles empty/fallback lists safely', () => {
+		globalThis.mediaWebsites = null;
+		globalThis.songWebsites = null;
+		globalThis.gameWebsites = null;
+
+		jest.isolateModules(() => {
+			jest.doMock('../script', () => ({
+				mediaWebsites: null,
+				songWebsites: null,
+				gameWebsites: null
+			}));
+			const bg = require('../background');
+			expect(bg.getWebsites(bg.CONTEXT_MENUS.MEDIA)).toEqual([]);
+			expect(bg.getWebsites(bg.CONTEXT_MENUS.SONG)).toEqual([]);
+			expect(bg.getWebsites(bg.CONTEXT_MENUS.GAME)).toEqual([]);
+		});
 	});
 
 	test('createContextMenus creates parent menu and submenus after removeAll', () => {
@@ -94,6 +123,14 @@ describe('Background script context menu logic', () => {
 
 	test('createContextMenus does not crash if chrome or contextMenus is undefined', () => {
 		delete global.chrome;
+		expect(() => createContextMenus()).not.toThrow();
+
+		global.chrome = {};
+		expect(() => createContextMenus()).not.toThrow();
+	});
+
+	test('createContextMenus does not crash if removeAll is called without callback', () => {
+		global.chrome.contextMenus.removeAll = jest.fn();
 		expect(() => createContextMenus()).not.toThrow();
 	});
 
@@ -151,12 +188,18 @@ describe('Background script context menu logic', () => {
 		expect(global.chrome.tabs.create).not.toHaveBeenCalled();
 	});
 
-	test('handleContextMenuClick does not crash if chrome or tabs is undefined', () => {
+	test('handleContextMenuClick does not crash if chrome, tabs, or create is undefined', () => {
 		delete global.chrome;
 		const info = {
 			menuItemId: CONTEXT_MENUS.MEDIA,
 			selectionText: 'Inception'
 		};
+		expect(() => handleContextMenuClick(info)).not.toThrow();
+
+		global.chrome = { tabs: {} };
+		expect(() => handleContextMenuClick(info)).not.toThrow();
+
+		global.chrome = {};
 		expect(() => handleContextMenuClick(info)).not.toThrow();
 	});
 
@@ -168,8 +211,14 @@ describe('Background script context menu logic', () => {
 		expect(global.chrome.contextMenus.onClicked.addListener).toHaveBeenCalledWith(handleContextMenuClick);
 	});
 
-	test('setupBackground handles missing chrome object gracefully', () => {
+	test('setupBackground handles missing chrome and sub-objects gracefully', () => {
 		delete global.chrome;
+		expect(() => setupBackground()).not.toThrow();
+
+		global.chrome = { runtime: {}, contextMenus: {} };
+		expect(() => setupBackground()).not.toThrow();
+
+		global.chrome = { runtime: { onInstalled: {} }, contextMenus: {} };
 		expect(() => setupBackground()).not.toThrow();
 	});
 });

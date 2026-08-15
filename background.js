@@ -37,7 +37,7 @@ function getWebsites(menuItemId) {
 }
 
 function createContextMenus() {
-	if (globalThis.chrome?.contextMenus) {
+	if (globalThis.chrome?.contextMenus?.removeAll && globalThis.chrome?.contextMenus?.create) {
 		globalThis.chrome.contextMenus.removeAll(() => {
 			chrome.contextMenus.create({
 				id: 'multisearch-parent',
@@ -82,14 +82,15 @@ function handleContextMenuClick(info, tab) {
 }
 
 function setupBackground() {
-	globalThis.chrome?.runtime?.onInstalled?.addListener(createContextMenus);
-	globalThis.chrome?.runtime?.onStartup?.addListener(createContextMenus);
-	globalThis.chrome?.contextMenus?.onClicked?.addListener(handleContextMenuClick);
+	globalThis.chrome?.runtime?.onInstalled?.addListener?.(createContextMenus);
+	globalThis.chrome?.runtime?.onStartup?.addListener?.(createContextMenus);
+	globalThis.chrome?.contextMenus?.onClicked?.addListener?.(handleContextMenuClick);
 }
 
 setupBackground();
 
-if (typeof module !== 'undefined' && module?.exports) {
+/* istanbul ignore next */
+if (typeof module !== 'undefined' && module.exports) {
 	module.exports = {
 		CONTEXT_MENUS,
 		getWebsites,

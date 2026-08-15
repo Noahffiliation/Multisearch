@@ -4,14 +4,24 @@
     "description": "Search multiple sites at once",
     "manifest_version": 3,
     "author": "Noah Lindsey",
+    "icons": {
+        "16": "icons/icon-16.png",
+        "48": "icons/icon-48.png",
+        "128": "icons/icon-128.png"
+    },
     "permissions": [
         "contextMenus"
     ],
     "background": {
         "service_worker": "background.js"
     },
-    "action":{
+    "action": {
         "default_popup": "index.html",
-        "default_title": "Multisearch"
+        "default_title": "Multisearch",
+        "default_icon": {
+            "16": "icons/icon-16.png",
+            "48": "icons/icon-48.png",
+            "128": "icons/icon-128.png"
+        }
     }
 }
