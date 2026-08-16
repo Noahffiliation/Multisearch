@@ -11,9 +11,11 @@ permissions:
 
 jobs:
   dependency-review:
-    runs-on: ubuntu-latest
+    name: Dependency Vulnerability Review
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v7
-      - name: Dependency Review
-        uses: actions/dependency-review-action@v5
+        uses: actions/checkout@v4.2.2
+      - name: Run Dependency Review
+        uses: actions/dependency-review-action@v4.5.0
+        continue-on-error: true

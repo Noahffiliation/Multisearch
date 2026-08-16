@@ -1,0 +1,7 @@
+services:
+  multisearch:
+    build: .
+    container_name: multisearch
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
