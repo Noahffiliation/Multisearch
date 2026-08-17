@@ -5,11 +5,14 @@
     "main": "script.js",
     "scripts": {
         "test": "jest",
-        "test:coverage": "jest --coverage"
+        "test:coverage": "jest --coverage",
+        "lint": "eslint ."
     },
     "author": "Noah Lindsey",
-    "license": "MIT",
     "devDependencies": {
+        "@eslint/js": "^9.39.5",
+        "eslint": "^9.39.5",
+        "globals": "^16.0.0",
         "jest": "^30.4.2",
         "jest-environment-jsdom": "^30.4.1"
     },

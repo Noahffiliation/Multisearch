@@ -69,7 +69,7 @@ function createContextMenus() {
 	}
 }
 
-function handleContextMenuClick(info, tab) {
+function handleContextMenuClick(info, _tab) {
 	if (!info?.selectionText) return;
 	const query = info.selectionText.trim();
 	if (!query) return;
