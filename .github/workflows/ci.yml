@@ -22,6 +22,7 @@ concurrency:
 
 permissions:
   contents: read
+  packages: write
   security-events: write
 
 jobs:
@@ -30,4 +31,5 @@ jobs:
     with:
       node-version: "24.19.0"
       run-build: false
+      test-docker: true
     secrets: inherit
