@@ -13,8 +13,8 @@
         "@eslint/js": "^10.0.1",
         "eslint": "^10.9.1",
         "globals": "^17.11.0",
-        "jest": "^30.4.2",
-        "jest-environment-jsdom": "^30.4.1"
+        "jest": "^30.5.0",
+        "jest-environment-jsdom": "^30.5.0"
     },
     "overrides": {
         "@babel/core": "^7.29.6",
