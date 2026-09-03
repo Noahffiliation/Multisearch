@@ -4,3 +4,8 @@ coverage
 node_modules
 multisearch-extension.zip
 workflow.sh
+artifacts/
+build/
+container-sbom.spdx.json
+trivy-results.sarif
+.scannerwork/

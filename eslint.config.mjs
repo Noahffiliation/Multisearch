@@ -34,6 +34,7 @@ export default [
       "coverage/",
       "node_modules/",
       "multisearch-extension.zip",
+      "artifacts/**",
     ],
   },
 ];
