@@ -1,11 +1,11 @@
-if (typeof importScripts === 'function') {
-	importScripts('script.js');
+if (typeof importScripts === "function") {
+	importScripts("script.js");
 }
 
 const CONTEXT_MENUS = {
-	MEDIA: 'multisearch-media',
-	SONG: 'multisearch-song',
-	GAME: 'multisearch-game'
+	MEDIA: "multisearch-media",
+	SONG: "multisearch-song",
+	GAME: "multisearch-game",
 };
 
 let websitesModule;
@@ -15,9 +15,9 @@ function getWebsites(menuItemId) {
 	let songList = globalThis.songWebsites;
 	let gameList = globalThis.gameWebsites;
 
-	if (!mediaList && typeof require !== 'undefined') {
+	if (!mediaList && typeof require !== "undefined") {
 		if (!websitesModule) {
-			websitesModule = require('./script');
+			websitesModule = require("./script");
 		}
 		mediaList = websitesModule.mediaWebsites;
 		songList = websitesModule.songWebsites;
@@ -37,33 +37,36 @@ function getWebsites(menuItemId) {
 }
 
 function createContextMenus() {
-	if (globalThis.chrome?.contextMenus?.removeAll && globalThis.chrome?.contextMenus?.create) {
+	if (
+		globalThis.chrome?.contextMenus?.removeAll &&
+		globalThis.chrome?.contextMenus?.create
+	) {
 		globalThis.chrome.contextMenus.removeAll(() => {
 			chrome.contextMenus.create({
-				id: 'multisearch-parent',
-				title: 'Multisearch',
-				contexts: ['selection']
+				id: "multisearch-parent",
+				title: "Multisearch",
+				contexts: ["selection"],
 			});
 
 			chrome.contextMenus.create({
 				id: CONTEXT_MENUS.MEDIA,
-				parentId: 'multisearch-parent',
-				title: 'Search Media',
-				contexts: ['selection']
+				parentId: "multisearch-parent",
+				title: "Search Media",
+				contexts: ["selection"],
 			});
 
 			chrome.contextMenus.create({
 				id: CONTEXT_MENUS.SONG,
-				parentId: 'multisearch-parent',
-				title: 'Search Songs',
-				contexts: ['selection']
+				parentId: "multisearch-parent",
+				title: "Search Songs",
+				contexts: ["selection"],
 			});
 
 			chrome.contextMenus.create({
 				id: CONTEXT_MENUS.GAME,
-				parentId: 'multisearch-parent',
-				title: 'Search Games',
-				contexts: ['selection']
+				parentId: "multisearch-parent",
+				title: "Search Games",
+				contexts: ["selection"],
 			});
 		});
 	}
@@ -77,25 +80,29 @@ function handleContextMenuClick(info, _tab) {
 	const websites = getWebsites(info.menuItemId);
 
 	for (const website of websites) {
-		globalThis.chrome?.tabs?.create?.({ url: website + encodeURIComponent(query) });
+		globalThis.chrome?.tabs?.create?.({
+			url: website + encodeURIComponent(query),
+		});
 	}
 }
 
 function setupBackground() {
 	globalThis.chrome?.runtime?.onInstalled?.addListener?.(createContextMenus);
 	globalThis.chrome?.runtime?.onStartup?.addListener?.(createContextMenus);
-	globalThis.chrome?.contextMenus?.onClicked?.addListener?.(handleContextMenuClick);
+	globalThis.chrome?.contextMenus?.onClicked?.addListener?.(
+		handleContextMenuClick,
+	);
 }
 
 setupBackground();
 
 /* istanbul ignore next */
-if (typeof module !== 'undefined' && module.exports) {
+if (typeof module !== "undefined" && module.exports) {
 	module.exports = {
 		CONTEXT_MENUS,
 		getWebsites,
 		createContextMenus,
 		handleContextMenuClick,
-		setupBackground
+		setupBackground,
 	};
 }
