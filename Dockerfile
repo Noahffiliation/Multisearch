@@ -1,7 +1,9 @@
-FROM nginxinc/nginx-unprivileged:1.31-alpine3.24-slim
+FROM nginx/nginx-unprivileged:1.31.8-alpine3.24-slim
 
 USER root
-RUN apk upgrade --no-cache && apk add --no-cache 'zlib>=1.3.2-r1'
+RUN apk update \
+    && apk upgrade \
+    && rm -rf /var/cache/apk/*
 USER 101
 
 COPY index.html background.js /usr/share/nginx/html/
